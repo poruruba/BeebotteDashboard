@@ -7,7 +7,7 @@
 #include <HTTPClient.h>
 
 const char* url_background = "【背景画像ファイルのURL】/background.png"; // PNG
-const char* url_layout = "【レイアウトファイルのURL】/screen/layout.json";  // Json
+const char* url_layout = "【レイアウトファイルのURL】/layout.json";  // Json
 
 const char* wifi_ssid = "【WiFiアクセスポイントのSSID】";
 const char* wifi_password = "【WiFiアクセスポイントのパスワード】";
