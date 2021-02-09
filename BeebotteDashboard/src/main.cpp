@@ -15,7 +15,7 @@ const char* mqtt_server = "mqtt.beebotte.com";
 const uint16_t mqtt_port = 1883; // MQTTサーバのポート番号(TCP接続)
 
 #define MQTT_CLIENT_NAME  "TMusic" // MQTTサーバ接続時のクライアント名
-#define MQTT_USER "IAMトークン"
+#define MQTT_USER "【IAMトークン】"
 #define MQTT_PASSWORD ""
 
 #define FONT_NAME   lgfxJapanGothicP_24
