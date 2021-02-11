@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: https://ssl.gstatic.com 'unsafe-eval' 'unsafe-inline'; style-src * 'unsafe-inline'; media-src *; img-src * data: content: blob:;">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="msapplication-tap-highlight" content="no">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="css/start.css">
+  <script src="js/methods_bootstrap.js"></script>
+  <script src="js/components_bootstrap.js"></script>
+  <script src="js/vue_utils.js"></script>
+
+  <script src="dist/js/vconsole.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+  <script src="https://cdn.socket.io/socket.io-1.1.0.js"></script>
+  <script type="text/javascript" src="dist/js/bbt.js"></script>
+
+  <title>Beebotteダッシュボードエディタ</title>
+</head>
+<body>
+    <div id="top" class="container">
+        <h1>Beebotteダッシュボードエディタ</h1>
+        <hr>
+
+        <div class="form-inline">
+          <label>name</label> <input type="text" class="form-control" v-model="data_name" v-bind:disabled="image_path!=null">
+        </div>
+        <button class="btn btn-default" v-on:click="data_load" v-bind:disabled="image_path!=null">Load</button>
+        <button class="btn btn-default" v-on:click="data_save" v-bind:disabled="image_path==null">Save</button>
+        <button class="btn btn-default" v-on:click="data_close" v-bind:disabled="image_path==null">Close</button>
+
+        <br><br>
+        <label>image_path</label> {{image_path}}<br>
+
+        <button class="btn btn-default" v-on:click="data_image_update">更新</button>
+        <div style="position: relative;" v-if="image_path">
+          <img v-bind:src="image_path">
+          <p v-for="(element, index) in view_data" v-bind:style="view_styles[index]">
+            <span v-if="element.type.startsWith('bbt_')">
+              {{bbt_value[index]}}              
+            </span>
+            <span v-if="element.type=='date'">
+              {{new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit'})}}
+            </span>
+            <span v-if="element.type=='time'">
+              {{new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit'})}}
+            </span>
+            <span v-if="!element.type.startsWith('bbt_')">
+              {{element.value}}
+            </span>
+          </p>
+        </div>
+        <br>
+
+
+        <table class="table table-striped">
+          <thead>
+            <tr><th>編集/削除</th><th>type</th><th>value | topic</th><th>color</th><th>x</th><th>y</th><th>font-size</th></tr>
+          </thead>
+          <tbody>
+            <tr v-for="(element, index) in elements">
+              <td><button class="btn btn-default" v-on:click="call_data_update(index)">編集</button> <button class="btn btn-default" v-on:click="call_data_delete(index)">削除</button></td>
+              <td>{{element.type}}</td>
+              <td v-if="element.type.startsWith('bbt_')">{{element.topic}}</td>
+              <td v-else>{{element.value}}</td>
+              <td><p v-bind:style="{ color: toRGB(element.color) }">■</p>
+              <td>{{element.x}}</td>
+              <td>{{element.y}}</td>
+              <td>{{element.size}}</td>
+              </tr>
+            <tr>
+              <td>
+                <button class="btn btn-default" v-on:click="call_data_new">追加</button>
+              </td>
+              <td></td><td></td><td></td><td></td><td></td><td></td>
+            </tr>
+          </tbody>
+        </table>
+
+
+        <modal-dialog id="data_new">
+          <div slot="content">
+            <div class="modal-header">
+              <h4 class="modal-title">追加</h4>
+            </div>
+            <div class="modal-body">
+              <div class="form-inline">
+                <label>type</label>
+                <select class="form-control" v-model="data_new.type">
+                  <option value="date">date</option>
+                  <option value="time">time</option>
+                  <option value="string">string</option>
+                  <option value="number">number</option>
+                  <option value="float">float</option>
+                  <option value="bbt_string">bbt_string</option>
+                  <option value="bbt_number">bbt_number</option>
+                  <option value="bbt_float">bbt_float</option>
+                </select>
+              </div>
+              <label>x</label> <input type="number" class="form-control" v-model.number="data_new.x"><br>
+              <label>y</label> <input type="number" class="form-control" v-model.number="data_new.y"><br>
+              <label>size</label> <input type="number" class="form-control" v-model.number="data_new.size">
+              <div class="form-inline">
+                <label>align</label>
+                <select class="form-control" v-model="data_new.align">
+                  <option value="left">left</option>
+                  <option value="center">center</option>
+                  <option value="right">right</option>
+                </select>
+              </div>
+              <label>color</label> <input type="color" class="form-control" v-model="data_new_color">
+              <span v-if="data_new.type!='date' && data_new.type!='time'">
+                <span v-if="data_new.type.startsWith('bbt_')">
+                  <label>topic</label> <input type="text" class="form-control" v-model="data_new.topic">
+                </span>
+                <span v-else>
+                  <label>value</label> <input type="text" class="form-control" v-model="data_new.value">
+                </span>
+                <span v-if="data_new.type=='float' || data_new.type=='bbt_float'">
+                  <label>digit</label> <input type="number" class="form-control" v-model.number="data_new.digit">
+                </span>
+              </span>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" v-on:click="do_data_new">追加</button>
+                <button class="btn btn-secondary" v-on:click="dialog_close('#data_new')">キャンセル</button>
+            </div>
+          </div>
+        </modal-dialog>
+
+        <modal-dialog id="data_update">
+          <div slot="content">
+            <div class="modal-header">
+              <h4 class="modal-title">編集</h4>
+            </div>
+            <div class="modal-body">
+              <label>type</label> {{data_new.type}}<br>
+              <label>x</label> <input type="number" class="form-control" v-model.number="data_new.x">
+              <label>y</label> <input type="number" class="form-control" v-model.number="data_new.y">
+              <label>size</label> <input type="number" class="form-control" v-model.number="data_new.size">
+              <div class="form-inline">
+                <label>align</label> <select class="form-control" v-model="data_new.align">
+                  <option value="left">left</option>
+                  <option value="center">center</option>
+                  <option value="right">right</option>
+                </select>
+              </div>
+              <label>color</label> <input type="color" class="form-control" v-model="data_new_color">
+              <span v-if="data_new.type.startsWith('bbt_')">
+                <label>topic</label> <input type="text" class="form-control" v-model="data_new.topic">
+              </span>
+              <span v-else>
+                <label>value</label> <input type="text" class="form-control" v-model="data_new.value">
+              </span>
+              <span v-if="data_new.type=='float' || data_new.type=='bbt_float'">
+                <label>digit</label> <input type="number" class="form-control" v-model.number="data_new.digit">
+              </span>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" v-on:click="do_data_update">反映</button>
+                <button class="btn btn-secondary" v-on:click="dialog_close('#data_update')">キャンセル</button>
+            </div>
+          </div>
+        </modal-dialog>
+
+
+
+        <!-- for progress-dialog -->
+        <progress-dialog v-bind:title="progress_title"></progress-dialog>
+    </div>
+
+    <script src="js/start.js"></script>
+</body>

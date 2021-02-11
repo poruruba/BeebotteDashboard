@@ -1,0 +1,125 @@
+[
+	{
+		"type": "date",
+		"x": 0,
+		"y": 0,
+		"size": 32,
+		"color": 0
+	},
+	{
+		"type": "time",
+		"x": 250,
+		"y": 0,
+		"size": 32,
+		"align": "center",
+		"color": 0
+	},
+	{
+		"type": "string",
+		"x": 0,
+		"y": 30,
+		"size": 24,
+		"value": "温度",
+		"color": 255
+	},
+	{
+		"type": "bbt_float",
+		"x": 110,
+		"y": 30,
+		"size": 24,
+		"color": 255,
+		"align": "right",
+		"digit": 1,
+		"topic": "test/temperature"
+	},
+	{
+		"type": "string",
+		"x": 120,
+		"y": 30,
+		"size": 24,
+		"align": "left",
+		"value": "℃",
+		"color": 255
+	},
+	{
+		"type": "string",
+		"x": 0,
+		"y": 60,
+		"size": 24,
+		"value": "湿度",
+		"color": 255
+	},
+	{
+		"type": "bbt_float",
+		"x": 110,
+		"y": 60,
+		"size": 24,
+		"color": 255,
+		"digit": 1,
+		"align": "right",
+		"topic": "test/humidity"
+	},
+	{
+		"type": "string",
+		"x": 120,
+		"y": 60,
+		"size": 24,
+		"value": "%",
+		"align": "left",
+		"color": 255
+	},
+	{
+		"type": "string",
+		"x": 50,
+		"y": 90,
+		"size": 16,
+		"align": "right",
+		"value": "items",
+		"color": 16711680
+	},
+	{
+		"type": "bbt_number",
+		"x": 55,
+		"y": 90,
+		"size": 20,
+		"align": "left",
+		"color": 16711680,
+		"topic": "test/items"
+	},
+	{
+		"type": "string",
+		"x": 140,
+		"y": 90,
+		"size": 16,
+		"value": "LGTM",
+		"align": "right",
+		"color": 16711680
+	},
+	{
+		"type": "bbt_number",
+		"x": 145,
+		"y": 90,
+		"size": 20,
+		"color": 16711680,
+		"align": "left",
+		"topic": "test/likes"
+	},
+	{
+		"type": "string",
+		"x": 270,
+		"y": 90,
+		"size": 16,
+		"value": "followers",
+		"align": "right",
+		"color": 16711680
+	},
+	{
+		"type": "bbt_number",
+		"x": 275,
+		"y": 90,
+		"size": 20,
+		"color": 16711680,
+		"align": "left",
+		"topic": "test/followers"
+	}
+]
