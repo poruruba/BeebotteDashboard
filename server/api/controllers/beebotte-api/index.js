@@ -3,8 +3,9 @@
 const HELPER_BASE = process.env.HELPER_BASE || '../../helpers/';
 const Response = require(HELPER_BASE + 'response');
 
-const BEEBOTTE_APIKEY = process.env.BEEBOTTE_APIKEY || 'yBeebotte‚ÌAPIƒL[z';
-const BEEBOTTE_SECRETKEY = process.env.BEEBOTTE_SECRETKEY || 'yBeebotte‚ÌƒV[ƒNƒŒƒbƒgƒL[z';
+const BEEBOTTE_CHANNEL = process.env.BEEBOTTE_CHANNEL || 'ã€Beebotteã®ãƒãƒ£ãƒãƒ«åã€‘';
+const BEEBOTTE_APIKEY = process.env.BEEBOTTE_APIKEY || 'ã€Beebotteã®APIã‚­ãƒ¼ã€‘';
+const BEEBOTTE_SECRETKEY = process.env.BEEBOTTE_SECRETKEY || 'ã€Beebotteã®ã‚·ãƒ¼ã‚¯ãƒ¬ãƒƒãƒˆã‚­ãƒ¼ã€‘';
 
 const BASE_PATH = './public';
 const folders = [
@@ -24,6 +25,8 @@ const bclient = new bbt.Connector({
 exports.handler = async (event, context, callback) => {
 	if( event.path == '/beebotte-auth' ){
 		var params = event.queryStringParameters;
+		if( params.channel != ('private-' + BEEBOTTE_CHANNEL) )
+			throw 'channel mismatch';
 		var to_sign = params.sid + ':' + params.channel + '.' + params.resource + ':ttl=' + params.ttl + ':read=true:write=false';
 		var auth = bclient.sign( to_sign );
 
