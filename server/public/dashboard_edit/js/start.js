@@ -3,7 +3,6 @@
 //var vConsole = new VConsole();
 
 const BBT_APIKEY = '【BeebotteのAPIキー】';
-const BBT_AUTH_ENDPOINT = '/beebotte-auth';
 
 var vue_options = {
     el: "#top",
@@ -130,7 +129,7 @@ var vue_options = {
     mounted: function(){
         proc_load();
 
-        this.bbt = new BBT(BBT_APIKEY, { auth_endpoint: BBT_AUTH_ENDPOINT });
+        this.bbt = new BBT(BBT_APIKEY, { auth_endpoint: '/beebotte-auth' });
     }
 };
 vue_add_methods(vue_options, methods_bootstrap);
