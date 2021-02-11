@@ -80,7 +80,7 @@
               <td>{{element.type}}</td>
               <td v-if="element.type.startsWith('bbt_')">{{element.topic}}</td>
               <td v-else>{{element.value}}</td>
-              <td><p v-bind:style="{ color: toRGB(element.color) }">■</p>
+              <td><p v-bind:style="{ color: toRGB(element.color) }"><big>■</big></p>
               <td>{{element.x}}</td>
               <td>{{element.y}}</td>
               <td>{{element.align}}</td>
