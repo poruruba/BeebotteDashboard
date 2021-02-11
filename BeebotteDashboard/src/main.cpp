@@ -298,6 +298,9 @@ long doHttpGet(String url, uint8_t *p_buffer, unsigned long *p_len){
             }
             delay(1);
         }
+      }else{
+        http.end();
+        return -1;
       }
   } else {
     http.end();
