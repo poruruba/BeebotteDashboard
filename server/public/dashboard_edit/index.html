@@ -72,7 +72,7 @@
 
         <table class="table table-striped">
           <thead>
-            <tr><th>編集/削除</th><th>type</th><th>value | topic</th><th>color</th><th>x</th><th>y</th><th>font-size</th></tr>
+            <tr><th>編集/削除</th><th>type</th><th>value | topic</th><th>color</th><th>x</th><th>y</th><th>align</th><th>font-size</th></tr>
           </thead>
           <tbody>
             <tr v-for="(element, index) in elements">
@@ -83,6 +83,7 @@
               <td><p v-bind:style="{ color: toRGB(element.color) }">■</p>
               <td>{{element.x}}</td>
               <td>{{element.y}}</td>
+              <td>{{element.align}}</td>
               <td>{{element.size}}</td>
               </tr>
             <tr>
