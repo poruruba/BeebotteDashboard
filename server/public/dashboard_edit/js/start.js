@@ -105,7 +105,7 @@ var vue_options = {
             this.dialog_open("#data_update");
         },
         do_data_update: async function(){
-            this.data_new.color = parseInt(this.data_new_color.substr(1), 16);
+            this.data_new.color = this.fromRGB(this.data_new_color);
             this.$set(this.elements, this.data_index, this.data_new);
 
             this.dialog_close('#data_update');
