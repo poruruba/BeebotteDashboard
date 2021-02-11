@@ -118,7 +118,7 @@ var vue_options = {
             this.dialog_open('#data_new');
         },
         do_data_new: function(){
-            this.data_new.color = parseInt(this.data_new_color.substr(1), 16);
+            this.data_new.color = this.fromRGB(this.data_new_color);
             this.elements.push(this.data_new);
 
             this.dialog_close('#data_new');
